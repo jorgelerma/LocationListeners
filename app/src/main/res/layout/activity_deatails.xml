@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <TextView
+        android:id="@+id/dselect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please selct one: "
+        android:textSize="30sp"
+        android:textAlignment="center"
+        android:textColor="@color/mycolor"
+
+        />
+
+
+    <Button
+        android:id="@+id/dcall"
+        android:layout_below="@id/dselect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Call"
+        android:textSize="25sp"
+        android:onClick="calling"
+
+        />
+
+    <Button
+        android:id="@+id/dmap"
+        android:layout_below="@id/dcall"
+        android:text="MAP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:onClick="mapeit"
+        />
+
+    <TextView
+        android:id="@+id/dSelecting"
+        android:layout_below="@id/dmap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textAlignment="center"
+        />
+
+    <Button
+        android:id="@+id/dhttpz"
+        android:text="HTTP REQUEST"
+        android:layout_below="@id/dSelecting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textAlignment="center"
+
+        />
+
+    <TextView
+        android:id="@+id/dresultz"
+        android:layout_below="@id/dhttpz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+
+        />
+
+</RelativeLayout>
