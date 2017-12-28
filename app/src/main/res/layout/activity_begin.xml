@@ -54,9 +54,8 @@
         android:onClick="actionz"
         />
 
-
-
     <TextView
+        android:id="@+id/eTexting2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
@@ -64,5 +63,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/eButton2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="HTTPz Request"
+
+
+        />
 
 </LinearLayout>

@@ -5,26 +5,58 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class BeginActivity extends AppCompatActivity {
+
+    TextView txtString;
+    public String url= "http://jsonplaceholder.typicode.com/posts/1";
 
     private static final String TAG = "InicioActivity";
 
     private EditText mNombre, mEmail, mTel, mMiscell, mLugar;
     //public static final String myString = "";
+    private Button mybutton2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin);
 
+        txtString = findViewById(R.id.eTexting2);
+
         mNombre = (EditText) findViewById(R.id.eNombre);
         mEmail = (EditText) findViewById(R.id.eEmail);
         mTel = findViewById(R.id.eTel);
         mMiscell = findViewById(R.id.eHobbi);
         mLugar = findViewById(R.id.eLugar);
+        mybutton2 = findViewById(R.id.eButton2);
+
+        mybutton2.setOnClickListener(new View.OnClickListener(){
+
+
+            @Override
+            public void onClick(View view) {
+
+                requestings();
+            }
+        });
+
+
     }
 
         // myString = String.valueOf(mMiscell.getText());
@@ -108,6 +140,68 @@ public class BeginActivity extends AppCompatActivity {
 
 
             //}
+
+
+    }
+
+
+    // FOR HTTP REQUEST USING OKHTTP
+    public void requestings(){
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+
+
+        client.newCall(request).enqueue(new Callback() {
+
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        txtString.setText(" BIG TIME FAILURE: ");
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+               //final String myString = response.body().string();
+                String myString = null;
+
+                JSONObject myJSONObject = null;
+
+                try {
+                    myJSONObject = new JSONObject(response.body().string());
+                     myString = myJSONObject.getString("body");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                final String myStringz = myString;
+
+
+                        runOnUiThread(new Runnable(){
+
+                    @Override
+                    public void run() {
+                        txtString.setText(myStringz);
+                        Log.i("DONER", "Setting the text");
+                    }
+                });
+
+            }
+        });
+
+
 
 
     }
