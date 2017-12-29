@@ -32,6 +32,8 @@ public class BeginActivity extends AppCompatActivity {
     //public static final String myString = "";
     private Button mybutton2;
 
+    private TextView netStatus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,7 @@ public class BeginActivity extends AppCompatActivity {
         mMiscell = findViewById(R.id.eHobbi);
         mLugar = findViewById(R.id.eLugar);
         mybutton2 = findViewById(R.id.eButton2);
+        netStatus = findViewById(R.id.eNetStatus);
 
         mybutton2.setOnClickListener(new View.OnClickListener(){
 
@@ -92,8 +95,8 @@ public class BeginActivity extends AppCompatActivity {
                 newuser.setTel((mTel.getText().toString()));
                 newuser.setMiscell(mMiscell.getText().toString());
 
-
-                Toast.makeText(this, " COMPLETE ", Toast.LENGTH_SHORT).show();
+                // TO REMOVE COMMENTED OUT
+                //Toast.makeText(this, " COMPLETE ", Toast.LENGTH_SHORT).show();
 
                 Intent i = new Intent(this,Details.class);
 
@@ -151,6 +154,7 @@ public class BeginActivity extends AppCompatActivity {
 
         Request request = new Request.Builder()
                 .url(url)
+                .get()
                 .build();
 
 
@@ -175,10 +179,15 @@ public class BeginActivity extends AppCompatActivity {
 
                //final String myString = response.body().string();
                 String myString = null;
+                String myVar = null;
 
                 JSONObject myJSONObject = null;
 
                 try {
+
+                    myVar = response.networkResponse().toString();
+                    Log.d("NETWORKZ", "This is Network Response: " + myVar);
+
                     myJSONObject = new JSONObject(response.body().string());
                      myString = myJSONObject.getString("body");
                 } catch (JSONException e) {
@@ -187,6 +196,7 @@ public class BeginActivity extends AppCompatActivity {
 
 
                 final String myStringz = myString;
+                final String myVarz = myVar;
 
 
                         runOnUiThread(new Runnable(){
@@ -194,6 +204,8 @@ public class BeginActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         txtString.setText(myStringz);
+
+                        netStatus.setText(myVarz);
                         Log.i("DONER", "Setting the text");
                     }
                 });

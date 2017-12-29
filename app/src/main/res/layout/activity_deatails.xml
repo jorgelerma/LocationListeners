@@ -68,4 +68,14 @@
 
         />
 
+
+    <Button
+        android:id="@+id/eGPS"
+        android:layout_below="@id/dresultz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GPS LOCATION"
+        android:onClick="locationGPS"
+        />
+
 </RelativeLayout>

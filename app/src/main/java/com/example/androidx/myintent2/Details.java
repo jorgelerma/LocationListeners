@@ -1,9 +1,16 @@
 package com.example.androidx.myintent2;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,13 +26,14 @@ import okhttp3.Callback;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.OkHttpClient;
+
 import java.io.IOException;
 
 /**
  * Created by androidx on 12/17/17.
  */
 
-public class Details extends AppCompatActivity {
+public class Details extends AppCompatActivity implements LocationListener {
 
 
     private User myUser;
@@ -36,12 +44,17 @@ public class Details extends AppCompatActivity {
     private OkHttpClient client;
     private Button getBtn;
     JSONObject jsonResponse;
+    private LocationManager locationManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deatails);
+
+
+        /********** get Gps location service LocationManager object ***********/
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         selector = findViewById(R.id.dSelecting);
         result = (TextView) findViewById(R.id.dresultz);
@@ -55,24 +68,66 @@ public class Details extends AppCompatActivity {
 
         client = new OkHttpClient();
 
+        /*
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                1000,   // 3 sec
+                10, this);
+
+              */
+
+        locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER,
+                1000,   // 3 sec
+                10, this);
+
+        double latitude = 0;
+        double longitude = 0;
+
+        if (locationManager != null) {
+            Location location = locationManager
+                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null) {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+
+                Log.d("LOCAL", "****** " + latitude);
+                Log.d("LOCAL", "****** " + longitude);
+
+                result.setText("Lat: " + latitude + " \n LONG: " + longitude);
+            }
+        }
+
+        //locationManager.requestLocationUpdates(getProviderName(), minTime,
+                //minDistance, locationListener);
+
 
         if (getIntent().hasExtra("user")) {
             myUser = (User) getIntent().getSerializableExtra("user");
-            Toast.makeText(this, myUser.toString(), Toast.LENGTH_LONG).show();
+            // TO REMOVE COMMENTED OUT
+            //Toast.makeText(this, myUser.toString(), Toast.LENGTH_LONG).show();
 
 
         }
 
         if (getIntent().hasExtra("name")) {
-            Toast.makeText(this, getIntent().getStringExtra("name"), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, getIntent().getStringExtra("name"), Toast.LENGTH_SHORT).show();
         }
 
         if (getIntent().hasExtra("tel")) {
-            Toast.makeText(this, getIntent().getStringExtra("tel"), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, getIntent().getStringExtra("tel"), Toast.LENGTH_SHORT).show();
         }
 
         if (getIntent().hasExtra("miscell")) {
-            Toast.makeText(this, getIntent().getStringExtra("miscell"), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, getIntent().getStringExtra("miscell"), Toast.LENGTH_SHORT).show();
             //setSelectors(getIntent().getStringExtra("miscell"));
             myStrings = getIntent().getStringExtra("miscell");
 
@@ -261,6 +316,162 @@ public class Details extends AppCompatActivity {
         thread.start();
 
     } // THIS IS SERVICES
+
+
+    // THIS IS FOR GPS LOCATION
+    public void locationGPS(View view) {
+
+        boolean isNetworkEnabled;
+        boolean isGPSEnabled;
+
+        LocationManager locationManager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
+
+        // getting network status
+        //isNetworkEnabled = locationManager
+                //.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        // getting GPS status
+        isGPSEnabled = locationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+
+        // THIS IS GPS ENABLE CLOSING
+        /*
+        if (isGPSEnabled) {
+            if (location == null) {
+                locationManager.requestLocationUpdates(
+                        LocationManager.GPS_PROVIDER,
+                        MIN_TIME_BW_UPDATES,
+                        MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                Log.d("GPS Enabled", "GPS Enabled");
+                if (locationManager != null) {
+                    location = locationManager
+                            .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (location != null) {
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
+                    }
+                }
+            }
+        }
+        */
+        // THIS IS GPS ENABLE CLOSING
+
+
+        /*
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Log.d("GPS", "GPS enable: ");
+        }
+        */
+
+
+
+
+
+
+
+    }  // THIS IS FOR GPS LOCATION, CLOSSING
+
+
+    private int counterz = 0;
+
+    // THIS IS FOR ADDED LOCATION LISTENER OPENING
+    LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+
+            double longitudeNetwork = location.getLongitude();
+            double latitudeNetwork = location.getLatitude();
+
+            String tmpString = String.valueOf(longitudeNetwork);
+
+            Toast.makeText(getBaseContext(), tmpString, Toast.LENGTH_LONG).show();
+
+            Log.d("LONGITUD", " THIS IS LONGITUD: " + tmpString);
+
+
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+
+
+            //result.setText("Lat: " + latitude + " \n LONG: " + longitude);
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+
+            Toast.makeText(getBaseContext(), "Gps turned on ", Toast.LENGTH_LONG).show();
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+            Toast.makeText(getBaseContext(), "Gps turned OFF ", Toast.LENGTH_LONG).show();
+
+        }
+
+
+    };  // THIS IS FOR ADDED LOCATION LISTENER CLOSING
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        double longitudeNetwork = location.getLongitude();
+        double latitudeNetwork = location.getLatitude();
+        double altitudGPS = location.getAltitude();
+        double speedGPS = location.getSpeed();
+        double timeGPS = location.getTime();
+
+        String longitudeString = String.valueOf(longitudeNetwork);
+        String latitudeString = String.valueOf(latitudeNetwork);
+        String altitudString = String.valueOf(altitudGPS);
+        String speedString = String.valueOf(speedGPS);
+        String timeString = String.valueOf(timeGPS);
+
+        Toast.makeText(getBaseContext(), longitudeString, Toast.LENGTH_LONG).show();
+
+        Log.d("LONGITUD", " THIS IS LONGITUD: " + longitudeString);
+
+        int numCount = counters(counterz);
+
+        counterz++;
+
+        result.setText(" ON LOCATION CHANGE: " + "\n  Counters: " + counterz + " \n  LATITUDE: " + latitudeString + " \n LONGITUDE: " + longitudeString
+        + " \n ALTITUD: "  + altitudString + " \n SPEED: " + speedString + " \n Time: " + timeString);
+
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+        Toast.makeText(getBaseContext(), "Gps turned ON ", Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+        Toast.makeText(getBaseContext(), "Gps turned OFF ", Toast.LENGTH_LONG).show();
+
+    }
+
+
+    public int counters(int vars){
+
+        return vars++;
+    }
 
 
 }
