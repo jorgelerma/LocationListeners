@@ -68,7 +68,7 @@ public class Details extends AppCompatActivity implements LocationListener {
 
         client = new OkHttpClient();
 
-        /*
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -83,11 +83,13 @@ public class Details extends AppCompatActivity implements LocationListener {
                 1000,   // 3 sec
                 10, this);
 
-              */
+
+
 
         locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER,
                 1000,   // 3 sec
                 10, this);
+
 
         double latitude = 0;
         double longitude = 0;
@@ -428,12 +430,15 @@ public class Details extends AppCompatActivity implements LocationListener {
         double altitudGPS = location.getAltitude();
         double speedGPS = location.getSpeed();
         double timeGPS = location.getTime();
+        double bearingGPS = location.getBearing();
+        String providerGPS = location.getProvider();
 
         String longitudeString = String.valueOf(longitudeNetwork);
         String latitudeString = String.valueOf(latitudeNetwork);
         String altitudString = String.valueOf(altitudGPS);
         String speedString = String.valueOf(speedGPS);
         String timeString = String.valueOf(timeGPS);
+        String bearingString = String.valueOf(bearingGPS);
 
         Toast.makeText(getBaseContext(), longitudeString, Toast.LENGTH_LONG).show();
 
@@ -444,7 +449,8 @@ public class Details extends AppCompatActivity implements LocationListener {
         counterz++;
 
         result.setText(" ON LOCATION CHANGE: " + "\n  Counters: " + counterz + " \n  LATITUDE: " + latitudeString + " \n LONGITUDE: " + longitudeString
-        + " \n ALTITUD: "  + altitudString + " \n SPEED: " + speedString + " \n Time: " + timeString);
+        + " \n ALTITUD: "  + altitudString + " \n SPEED: " + speedString + " \n Time: " + timeString
+        + " \n BEARING: " + bearingString + " \n PROVIDER: " + providerGPS );
 
     }
 

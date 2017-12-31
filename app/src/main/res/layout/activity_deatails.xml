@@ -6,8 +6,19 @@
 
     >
 
+
+    <TextView
+        android:id="@+id/dresultz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This is the Text View DEFAULT"
+        android:textSize="22sp"
+
+        />
+
     <TextView
         android:id="@+id/dselect"
+        android:layout_below="@+id/dresultz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Please selct one: "
@@ -59,19 +70,12 @@
 
         />
 
-    <TextView
-        android:id="@+id/dresultz"
-        android:layout_below="@id/dhttpz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
 
-        />
 
 
     <Button
         android:id="@+id/eGPS"
-        android:layout_below="@id/dresultz"
+        android:layout_below="@id/dhttpz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="GPS LOCATION"
