@@ -28,6 +28,10 @@ import okhttp3.Response;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by androidx on 12/17/17.
@@ -448,9 +452,16 @@ public class Details extends AppCompatActivity implements LocationListener {
 
         counterz++;
 
+        //Date date = new Date(1318386508000L);
+        Date date = new Date(((long) timeGPS));
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        //format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+        format.setTimeZone(TimeZone.getTimeZone("America/Chicago"));
+        String formatted = format.format(date);
+
         result.setText(" ON LOCATION CHANGE: " + "\n  Counters: " + counterz + " \n  LATITUDE: " + latitudeString + " \n LONGITUDE: " + longitudeString
         + " \n ALTITUD: "  + altitudString + " \n SPEED: " + speedString + " \n Time: " + timeString
-        + " \n BEARING: " + bearingString + " \n PROVIDER: " + providerGPS );
+        + " \n BEARING: " + bearingString + " \n PROVIDER: " + providerGPS + " \n CURRENT TIME: " + formatted);
 
     }
 
